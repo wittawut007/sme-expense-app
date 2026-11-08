@@ -377,8 +377,8 @@ export function AuthScreen({ onLoginSuccess }: AuthScreenProps) {
             </button>
           </form>
 
-          {/* Quick Login for Pallet Idea Furniture */}
-          {mode === 'signin' && (
+          {/* Quick Login (เฉพาะโหมด Local Development สำหรับทดสอบ ไม่แสดงบน Production) */}
+          {process.env.NODE_ENV === 'development' && mode === 'signin' && (
             <div className="pt-3 border-t border-slate-100">
               <button
                 type="button"
@@ -386,7 +386,7 @@ export function AuthScreen({ onLoginSuccess }: AuthScreenProps) {
                 className="w-full py-3 sm:py-3.5 px-4 bg-purple-50/80 hover:bg-purple-100/90 text-[#6C5DD3] rounded-2xl text-xs sm:text-sm font-bold transition-all flex items-center justify-center gap-2 border border-purple-200/50 cursor-pointer active:scale-[0.99]"
               >
                 <Sparkles className="w-4 h-4" />
-                <span>เข้าสู่ระบบร้านพาเลทไอเดีย (ข้อมูลเดิม)</span>
+                <span>เข้าสู่ระบบบัญชีทดสอบ (Dev Only)</span>
               </button>
             </div>
           )}

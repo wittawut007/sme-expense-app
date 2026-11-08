@@ -10,8 +10,8 @@ const kanit = Kanit({
 });
 
 export const metadata: Metadata = {
-  title: 'ร้านพาเลทไอเดียเฟอร์นิเจอร์ — ระบบจัดการคำสั่งซื้อและค่าใช้จ่าย',
-  description: 'ระบบบริหารคำสั่งซื้อ ยอดขาย และต้นทุนค่าใช้จ่าย ร้านพาเลทไอเดียเฟอร์นิเจอร์ เชื่อมต่อ Supabase Cloud',
+  title: 'SME Management - ระบบจัดการร้านค้าและค่าใช้จ่าย',
+  description: 'ระบบบริหารคำสั่งซื้อ ยอดขาย และต้นทุนค่าใช้จ่ายสำหรับธุรกิจ SME เชื่อมต่อ Supabase Cloud',
   icons: {
     icon: [
       { url: '/logo.png', type: 'image/png' },
@@ -22,7 +22,7 @@ export const metadata: Metadata = {
   appleWebApp: {
     capable: true,
     statusBarStyle: 'black-translucent',
-    title: 'ร้านพาเลทไอเดียเฟอร์นิเจอร์',
+    title: 'SME Management',
   },
 };
 

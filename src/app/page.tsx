@@ -294,6 +294,7 @@ function WoodLogIcon({ className = "w-5 h-5" }: { className?: string }) {
 /* ─── Expense Category Styles (สีแยกแต่ละหมวดหมู่) ───────── */
 const getExpenseCategoryStyle = (category: string) => {
   switch (category) {
+    case 'ต้นทุนสินค้า/วัตถุดิบ':
     case 'ไม้พาเลท/วัตถุดิบ':
       return {
         badge: '',
@@ -302,6 +303,7 @@ const getExpenseCategoryStyle = (category: string) => {
         iconBg: 'bg-amber-50 text-amber-700',
         pillActive: 'text-amber-700',
       };
+    case 'อุปกรณ์และบรรจุภัณฑ์':
     case 'ตะปู/อุปกรณ์ประกอบ':
       return {
         badge: '',
@@ -309,22 +311,6 @@ const getExpenseCategoryStyle = (category: string) => {
         dot: 'bg-slate-600',
         iconBg: 'bg-slate-100 text-slate-700',
         pillActive: 'text-slate-800',
-      };
-    case 'สีและเคมีภัณฑ์':
-      return {
-        badge: '',
-        text: 'text-indigo-600',
-        dot: 'bg-indigo-600',
-        iconBg: 'bg-indigo-50 text-indigo-600',
-        pillActive: 'text-indigo-700',
-      };
-    case 'อุปกรณ์/เครื่องมือช่าง':
-      return {
-        badge: '',
-        text: 'text-sky-600',
-        dot: 'bg-sky-600',
-        iconBg: 'bg-sky-50 text-sky-600',
-        pillActive: 'text-sky-700',
       };
     case 'ค่าขนส่ง/น้ำมัน':
       return {
@@ -334,6 +320,7 @@ const getExpenseCategoryStyle = (category: string) => {
         iconBg: 'bg-orange-50 text-orange-600',
         pillActive: 'text-orange-700',
       };
+    case 'ค่าจ้างและค่าบริการ':
     case 'ค่าแรงช่าง':
       return {
         badge: '',
@@ -341,6 +328,24 @@ const getExpenseCategoryStyle = (category: string) => {
         dot: 'bg-emerald-600',
         iconBg: 'bg-emerald-50 text-emerald-700',
         pillActive: 'text-emerald-800',
+      };
+    case 'ค่าเช่าและสถานที่':
+    case 'สีและเคมีภัณฑ์':
+      return {
+        badge: '',
+        text: 'text-indigo-600',
+        dot: 'bg-indigo-600',
+        iconBg: 'bg-indigo-50 text-indigo-600',
+        pillActive: 'text-indigo-700',
+      };
+    case 'การตลาดและโฆษณา':
+    case 'อุปกรณ์/เครื่องมือช่าง':
+      return {
+        badge: '',
+        text: 'text-sky-600',
+        dot: 'bg-sky-600',
+        iconBg: 'bg-sky-50 text-sky-600',
+        pillActive: 'text-sky-700',
       };
     case 'ซ่อมบำรุง/เครื่องมือ':
       return {
@@ -364,12 +369,12 @@ const getExpenseCategoryStyle = (category: string) => {
 
 /* ─── Expense Categories Constant ────────────────────────── */
 const EXPENSE_CATEGORIES = [
-  'ไม้พาเลท/วัตถุดิบ',
-  'ตะปู/อุปกรณ์ประกอบ',
-  'สีและเคมีภัณฑ์',
-  'อุปกรณ์/เครื่องมือช่าง',
+  'ต้นทุนสินค้า/วัตถุดิบ',
+  'อุปกรณ์และบรรจุภัณฑ์',
   'ค่าขนส่ง/น้ำมัน',
-  'ค่าแรงช่าง',
+  'ค่าจ้างและค่าบริการ',
+  'ค่าเช่าและสถานที่',
+  'การตลาดและโฆษณา',
   'ซ่อมบำรุง/เครื่องมือ',
   'เบ็ดเตล็ด/อื่นๆ',
 ] as const;
@@ -1038,7 +1043,7 @@ function SwipeableOrderCard({
           <div className="min-w-0 flex-1">
             {/* แถวแรก: รายละเอียดสินค้า สีดำตัวใหญ่ ปรับใหญ่ขึ้น 20% */}
             <p className="text-[17px] font-bold text-slate-900 truncate leading-snug">
-              {o.productDetails || 'ไม้พาเลท'}
+              {o.productDetails || 'รายการสินค้า'}
             </p>
             {/* แถวที่สอง: ชื่อลูกค้า สีเทา ตัวบาง ตัวเล็ก พร้อมรหัสออเดอร์ */}
             <p className="text-xs text-slate-400 font-normal truncate mt-0.5">
@@ -1961,7 +1966,7 @@ export default function SMEExpenseApp() {
   };
   const [expenseForm, setExpenseForm] = useState(blankExpenseForm);
 
-  const createBlankSubItem = (cat = 'ไม้พาเลท/วัตถุดิบ'): ExpenseSubItem => ({
+  const createBlankSubItem = (cat = 'ต้นทุนสินค้า/วัตถุดิบ'): ExpenseSubItem => ({
     id: `item-${Date.now()}-${Math.random().toString(36).substring(2, 7)}`,
     category: cat,
     itemName: '',
@@ -2750,7 +2755,7 @@ export default function SMEExpenseApp() {
     setExpenseItems([
       {
         id: `edit-${e.rowNumber}`,
-        category: e.category || 'ไม้พาเลท/วัตถุดิบ',
+        category: e.category || 'ต้นทุนสินค้า/วัตถุดิบ',
         itemName: e.itemName || '',
         qty: e.qty || 1,
         unit: e.unit || 'ชิ้น',
@@ -2838,7 +2843,7 @@ export default function SMEExpenseApp() {
           const unitPrice = it.unitPrice !== '' ? Number(it.unitPrice) : (totalItemPrice / qty);
 
           return {
-            category: it.category || 'ไม้พาเลท/วัตถุดิบ',
+            category: it.category || 'ต้นทุนสินค้า/วัตถุดิบ',
             itemName: it.itemName.trim(),
             qty,
             unit: it.unit.trim() || 'ชิ้น',
@@ -2951,7 +2956,7 @@ export default function SMEExpenseApp() {
 
                 return {
                   id: `scan-${Date.now()}-${idx}`,
-                  category: it.category || d.category || 'ไม้พาเลท/วัตถุดิบ',
+                  category: it.category || d.category || 'ต้นทุนสินค้า/วัตถุดิบ',
                   itemName: it.itemName || '',
                   qty: q,
                   unit: it.unit || 'ชิ้น',
@@ -2962,7 +2967,7 @@ export default function SMEExpenseApp() {
             : [
                 {
                   id: `scan-${Date.now()}-0`,
-                  category: d.category || 'ไม้พาเลท/วัตถุดิบ',
+                  category: d.category || 'ต้นทุนสินค้า/วัตถุดิบ',
                   itemName: d.itemName || d.vendor || 'ค่าใช้จ่าย',
                   qty: 1,
                   unit: 'ชิ้น',
@@ -3133,7 +3138,7 @@ export default function SMEExpenseApp() {
                     title="แตะเพื่อเปิดการตั้งค่าร้านค้า (เปลี่ยนชื่อร้าน, หมวดหมู่, ข้อมูลติดต่อ)"
                   >
                     <h1 className="text-base sm:text-lg md:text-xl font-black text-white leading-snug tracking-tight drop-shadow-sm truncate group-hover:text-purple-200 transition-colors">
-                      {userProfile?.businessName || currentUser?.user_metadata?.business_name || 'ร้านพาเลทไอเดียเฟอร์นิเจอร์'}
+                      {userProfile?.businessName || currentUser?.user_metadata?.business_name || 'ร้านค้าของฉัน'}
                     </h1>
                   </button>
                 </div>
@@ -3201,7 +3206,7 @@ export default function SMEExpenseApp() {
                   <div className="flex items-center gap-2 min-w-0">
                     <span className="w-2.5 h-2.5 rounded-full bg-amber-400 shrink-0 animate-pulse" />
                     <span className="truncate text-white/90">
-                      กรุณาเข้าสู่ระบบร้านพาเลทไอเดีย หรือสมัครเปิดร้านใหม่
+                      กรุณาเข้าสู่ระบบ หรือสมัครเปิดร้านใหม่เพื่อจัดการข้อมูลร้านของคุณ
                     </span>
                   </div>
                   <button
@@ -3596,7 +3601,7 @@ export default function SMEExpenseApp() {
                             <div className="min-w-0 pr-3">
                               {/* แถวแรก: รายละเอียดสินค้า สีดำตัวใหญ่ */}
                               <p className="text-sm font-bold text-slate-900 truncate">
-                                {o.productDetails || 'ไม้พาเลท'}
+                                {o.productDetails || 'รายการสินค้า'}
                               </p>
                               {/* แถวที่สอง: ชื่อลูกค้า สีเทา ตัวบาง ตัวเล็ก */}
                               <p className="text-xs text-slate-400 font-normal truncate mt-0.5">
@@ -4609,7 +4614,7 @@ export default function SMEExpenseApp() {
                         <div className="min-w-0 pr-3 flex-1">
                           {/* แถวแรก: รายละเอียดสินค้า สีดำตัวใหญ่ */}
                           <p className="text-sm font-bold text-slate-900 truncate">
-                            {o.productDetails || 'ไม้พาเลท'}
+                            {o.productDetails || 'รายการสินค้า'}
                           </p>
                           {/* แถวที่สอง: ชื่อลูกค้า สีเทา ตัวบาง ตัวเล็ก */}
                           <p className="text-xs text-slate-400 font-normal truncate mt-0.5">
@@ -5694,7 +5699,7 @@ export default function SMEExpenseApp() {
             businessName:
               userProfile?.businessName ||
               currentUser?.user_metadata?.business_name ||
-              'ร้านพาเลทไอเดียเฟอร์นิเจอร์',
+              'ร้านค้าของฉัน',
             phone: storeDetails.phone || (userProfile as any)?.phone || '',
             address: storeDetails.address || '',
             taxId: storeDetails.taxId || '',

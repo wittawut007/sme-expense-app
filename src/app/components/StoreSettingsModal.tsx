@@ -30,12 +30,12 @@ export interface StoreSettingsData {
 }
 
 export const DEFAULT_EXPENSE_CATEGORIES = [
-  'ไม้พาเลท/วัตถุดิบ',
-  'ตะปู/อุปกรณ์ประกอบ',
-  'สีและเคมีภัณฑ์',
-  'อุปกรณ์/เครื่องมือช่าง',
+  'ต้นทุนสินค้า/วัตถุดิบ',
+  'อุปกรณ์และบรรจุภัณฑ์',
   'ค่าขนส่ง/น้ำมัน',
-  'ค่าแรงช่าง',
+  'ค่าจ้างและค่าบริการ',
+  'ค่าเช่าและสถานที่',
+  'การตลาดและโฆษณา',
   'ซ่อมบำรุง/เครื่องมือ',
   'เบ็ดเตล็ด/อื่นๆ',
 ];
@@ -313,7 +313,7 @@ export function StoreSettingsModal({
                   <input
                     type="text"
                     required
-                    placeholder="เช่น ร้านพาเลทไอเดียเฟอร์นิเจอร์ โคราช"
+                    placeholder="เช่น ร้านสบายใจ สโตร์ หรือ บริษัท สมาร์ท รีเทล จำกัด"
                     value={businessName}
                     onChange={(e) => setBusinessName(e.target.value)}
                     className="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#6C5DD3] focus:bg-white font-medium"
@@ -330,7 +330,7 @@ export function StoreSettingsModal({
                   <FileText className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
                   <input
                     type="text"
-                    placeholder="เช่น ผู้ผลิตและจัดจำหน่ายไม้พาเลทครบวงจร"
+                    placeholder="เช่น จำหน่ายสินค้าคุณภาพ บริการจัดส่งทั่วประเทศ"
                     value={tagline}
                     onChange={(e) => setTagline(e.target.value)}
                     className="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#6C5DD3] focus:bg-white"
