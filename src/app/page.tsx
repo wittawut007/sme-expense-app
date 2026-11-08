@@ -4704,10 +4704,10 @@ export default function SMEExpenseApp() {
         )}
 
         {/* ══════════════════════════════════════════════════ */}
-        {/*  FLOATING BOTTOM NAVIGATION BAR (Solid White)     */}
+        {/*  FLOATING BOTTOM NAVIGATION BAR (Gradient Transparency) */}
         {/* ══════════════════════════════════════════════════ */}
         <nav
-          className="fixed bottom-0 left-0 right-0 w-full bg-white z-40 border-t border-slate-100 shadow-[0_-2px_12px_rgba(0,0,0,0.04)]"
+          className="fixed bottom-0 left-0 right-0 w-full z-40 bg-gradient-to-b from-transparent via-white/85 via-40% to-white backdrop-blur-lg border-t border-white/30 shadow-[0_-4px_24px_rgba(0,0,0,0.03)]"
           style={{ paddingBottom: 'max(0.75rem, calc(env(safe-area-inset-bottom, 0px) + 0.35rem))' }}
         >
           <div className="max-w-[430px] mx-auto px-3 pt-2">
