@@ -119,8 +119,12 @@ export function AuthScreen({ onLoginSuccess }: AuthScreenProps) {
       <div className="w-full max-w-[390px] sm:max-w-[410px] relative z-10 space-y-6 sm:space-y-7">
         {/* Brand Header - Enlarged & Prominent */}
         <div className="text-center">
-          <div className="inline-flex items-center justify-center w-20 h-20 sm:w-24 sm:h-24 rounded-[28px] sm:rounded-[32px] bg-gradient-to-tr from-[#6C5DD3] via-[#7F6BFF] to-[#A492FF] shadow-2xl shadow-[#6C5DD3]/40 ring-4 ring-white/10 text-white mb-4">
-            <Package className="w-10 h-10 sm:w-12 sm:h-12 text-white drop-shadow-md" />
+          <div className="inline-flex items-center justify-center w-24 h-24 sm:w-28 sm:h-28 mb-3 relative">
+            <img
+              src="/logo.png"
+              alt="SME Management Logo"
+              className="w-full h-full object-contain filter drop-shadow-[0_12px_24px_rgba(0,0,0,0.45)]"
+            />
           </div>
           <h1 className="text-2xl sm:text-3xl md:text-4xl font-black text-white tracking-tight drop-shadow-sm leading-tight">
             SME Management

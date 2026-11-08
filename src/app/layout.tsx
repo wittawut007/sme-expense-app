@@ -12,6 +12,13 @@ const kanit = Kanit({
 export const metadata: Metadata = {
   title: 'ร้านพาเลทไอเดียเฟอร์นิเจอร์ — ระบบจัดการคำสั่งซื้อและค่าใช้จ่าย',
   description: 'ระบบบริหารคำสั่งซื้อ ยอดขาย และต้นทุนค่าใช้จ่าย ร้านพาเลทไอเดียเฟอร์นิเจอร์ เชื่อมต่อ Supabase Cloud',
+  icons: {
+    icon: [
+      { url: '/logo.png', type: 'image/png' },
+      { url: '/icon.svg', type: 'image/svg+xml' },
+    ],
+    apple: '/logo.png',
+  },
   appleWebApp: {
     capable: true,
     statusBarStyle: 'black-translucent',

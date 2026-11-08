@@ -260,11 +260,11 @@ export function StoreSettingsModal({
             <div className="space-y-4">
               {/* Logo Upload Section */}
               <div className="flex items-center gap-4 p-4 bg-slate-50 border border-slate-200/70 rounded-2xl">
-                <div className="relative group w-16 h-16 rounded-2xl bg-[#1A1325] overflow-hidden flex items-center justify-center shrink-0 border border-slate-200 shadow-sm">
+                <div className="relative group w-16 h-16 rounded-2xl bg-[#1A1325] overflow-hidden flex items-center justify-center shrink-0 border border-slate-200 shadow-sm p-1.5">
                   {logoUrl ? (
-                    <img src={logoUrl} alt="Store Logo" className="w-full h-full object-cover" />
+                    <img src={logoUrl} alt="Store Logo" className="w-full h-full object-cover rounded-xl" />
                   ) : (
-                    <Building2 className="w-7 h-7 text-amber-400" />
+                    <img src="/logo.png" alt="Store Logo" className="w-full h-full object-contain" />
                   )}
                 </div>
 

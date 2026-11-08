@@ -3098,8 +3098,12 @@ export default function SMEExpenseApp() {
                           className="w-full h-full rounded-full object-cover"
                         />
                       ) : (
-                        <div className="w-full h-full flex flex-col items-center justify-center bg-gradient-to-br from-amber-600/30 to-[#1A1325] text-amber-400">
-                          <WoodLogIcon className="w-5 h-5 sm:w-6 sm:h-6 text-amber-400 group-hover:scale-110 transition-transform" />
+                        <div className="w-full h-full flex items-center justify-center p-1 bg-[#1A1325]">
+                          <img
+                            src="/logo.png"
+                            alt="โลโก้ระบบ"
+                            className="w-full h-full object-contain group-hover:scale-110 transition-transform"
+                          />
                         </div>
                       )}
 
@@ -4165,11 +4169,11 @@ export default function SMEExpenseApp() {
             <div className="bg-white rounded-3xl p-5 border border-slate-100 space-y-4">
               <div className="flex items-center justify-between gap-3">
                 <div className="flex items-center gap-3 min-w-0">
-                  <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#6C5DD3] to-[#8E78FB] flex items-center justify-center text-white font-extrabold text-lg shrink-0 overflow-hidden relative border border-slate-100">
+                  <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#6C5DD3]/10 to-[#8E78FB]/20 flex items-center justify-center text-white font-extrabold text-lg shrink-0 overflow-hidden relative border border-slate-100 p-1.5">
                     {storeLogo ? (
-                      <img src={storeLogo} alt="โลโก้ร้าน" className="w-full h-full object-cover" />
+                      <img src={storeLogo} alt="โลโก้ร้าน" className="w-full h-full object-cover rounded-xl" />
                     ) : (
-                      <span>{currentUser ? (userProfile?.businessName || 'SME').substring(0, 3).toUpperCase() : 'DEMO'}</span>
+                      <img src="/logo.png" alt="โลโก้ร้าน" className="w-full h-full object-contain" />
                     )}
                   </div>
                   <div className="min-w-0">
