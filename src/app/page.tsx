@@ -56,6 +56,7 @@ import {
   DEFAULT_EXPENSE_CATEGORIES,
   DEFAULT_DELIVERY_METHODS,
 } from './components/StoreSettingsModal';
+import { CommercialDocumentModal } from './components/CommercialDocumentModal';
 import { getBrowserSupabaseClient } from '@/lib/supabase';
 import {
   ORDER_TIMELINE_STEPS,
@@ -794,6 +795,7 @@ function SwipeableOrderCard({
   onDeliveryDateChange,
   onEdit,
   onDelete,
+  onOpenDocument,
   isSwiped,
   onSwipeChange,
   isUpdating = false,
@@ -821,6 +823,7 @@ function SwipeableOrderCard({
   onDeliveryDateChange?: (rowNumber: number, date: string) => Promise<void> | void;
   onEdit: (o: OrderItem) => void;
   onDelete: (o: OrderItem) => void;
+  onOpenDocument?: (o: OrderItem) => void;
   isSwiped: boolean;
   onSwipeChange: (swiped: boolean) => void;
   isUpdating?: boolean;
@@ -1059,8 +1062,8 @@ function SwipeableOrderCard({
             </div>
           </div>
 
-          {/* Right: Price (ยอดรวม/ยอดคงเหลือ สีม่วงและสีแดง), Timeline Step Pill, Mini Progress Bar, Chevron */}
-          <div className="flex items-center gap-2.5 shrink-0">
+          {/* Right: Price, Timeline Step Pill, 1-Click "ออกบิล" Button, Chevron */}
+          <div className="flex items-center gap-2 shrink-0">
             <div className="text-right">
               {/* ยอดรวม / ยอดคงเหลือ (เช่น 1400/700 สีม่วงและสีแดง) */}
               <div
@@ -1092,6 +1095,23 @@ function SwipeableOrderCard({
                 />
               </div>
             </div>
+
+            {/* Direct 1-Click "ออกบิล" Button for this Order */}
+            {onOpenDocument && (
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onOpenDocument(o);
+                }}
+                className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-xl bg-purple-50 hover:bg-purple-100 text-[#6C5DD3] text-xs font-bold border border-purple-200/80 transition-all active:scale-95 shadow-2xs cursor-pointer shrink-0"
+                title={`ออกบิล / ใบเสนอราคา / ใบเสร็จ สำหรับออเดอร์ #${o.orderId}`}
+              >
+                <FileText className="w-3.5 h-3.5 text-[#6C5DD3]" />
+                <span className="hidden sm:inline">ออกบิล</span>
+              </button>
+            )}
+
             <div className="w-6 h-6 flex items-center justify-center text-slate-400">
               <ChevronDown
                 className={`w-4 h-4 transition-transform duration-200 ${
@@ -1237,22 +1257,36 @@ function SwipeableOrderCard({
               isUpdating={isUpdating}
             />
 
-            {/* Quick Actions inside expanded view: Edit and Delete buttons */}
-            <div className="flex items-center gap-2 pt-2 border-t border-slate-200/50">
-              <button
-                type="button"
-                onClick={() => onEdit(o)}
-                className="flex-1 py-2.5 px-3 rounded-xl bg-white hover:bg-slate-50 text-slate-700 text-xs font-bold flex items-center justify-center gap-1.5 transition-colors active:scale-95 cursor-pointer border border-slate-200/50"
-              >
-                <Pencil className="w-3.5 h-3.5 text-[#6C5DD3]" /> แก้ไขข้อมูลคำสั่งซื้อ
-              </button>
-              <button
-                type="button"
-                onClick={() => onDelete(o)}
-                className="py-2.5 px-3.5 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-600 text-xs font-bold flex items-center justify-center gap-1.5 transition-colors active:scale-95 cursor-pointer"
-              >
-                <Trash2 className="w-3.5 h-3.5" /> ลบออเดอร์
-              </button>
+            {/* Quick Actions inside expanded view: Document, Edit and Delete buttons */}
+            <div className="flex flex-col gap-2 pt-2 border-t border-slate-200/50">
+              {onOpenDocument && (
+                <button
+                  type="button"
+                  onClick={() => onOpenDocument(o)}
+                  className="w-full py-2.5 px-3 rounded-xl bg-purple-50 hover:bg-purple-100 text-[#6C5DD3] text-xs font-bold flex items-center justify-center gap-2 transition-colors active:scale-95 cursor-pointer border border-purple-200/70 shadow-2xs"
+                  title="เปิดหน้าต่างออกใบเสนอราคา, ใบแจ้งหนี้, ใบเสร็จรับเงิน และพิมพ์ PDF"
+                >
+                  <FileText className="w-4 h-4 text-[#6C5DD3]" />
+                  <span>ออกบิล / ใบเสนอราคา / ใบเสร็จรับเงิน (ดึงรายการสินค้าแยกแถวอัตโนมัติ)</span>
+                </button>
+              )}
+
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={() => onEdit(o)}
+                  className="flex-1 py-2 px-3 rounded-xl bg-white hover:bg-slate-50 text-slate-700 text-xs font-bold flex items-center justify-center gap-1.5 transition-colors active:scale-95 cursor-pointer border border-slate-200/50"
+                >
+                  <Pencil className="w-3.5 h-3.5 text-[#6C5DD3]" /> แก้ไขคำสั่งซื้อ
+                </button>
+                <button
+                  type="button"
+                  onClick={() => onDelete(o)}
+                  className="py-2 px-3.5 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-600 text-xs font-bold flex items-center justify-center gap-1.5 transition-colors active:scale-95 cursor-pointer"
+                >
+                  <Trash2 className="w-3.5 h-3.5" /> ลบ
+                </button>
+              </div>
             </div>
           </div>
         )}
@@ -1766,6 +1800,9 @@ export default function SMEExpenseApp() {
   } | null>(null);
   const [isScanning, setIsScanning] = useState(false);
   const [quickActionOpen, setQuickActionOpen] = useState(false);
+  // Commercial Document State (PDF / Quotation / Receipt)
+  const [showDocModal, setShowDocModal] = useState(false);
+  const [selectedDocOrder, setSelectedDocOrder] = useState<OrderItem | null>(null);
   const [expenseSearch, setExpenseSearch] = useState('');
   const [expenseCategoryFilter, setExpenseCategoryFilter] = useState('ALL');
   const [historyFilter, setHistoryFilter] = useState<'ALL' | 'ORDERS' | 'EXPENSES'>('ALL');
@@ -3719,6 +3756,19 @@ export default function SMEExpenseApp() {
                 </div>
 
                 <button
+                  type="button"
+                  onClick={() => {
+                    setSelectedDocOrder(null);
+                    setShowDocModal(true);
+                  }}
+                  className="px-2.5 sm:px-3 py-1.5 rounded-xl bg-purple-50 hover:bg-purple-100 text-[#6C5DD3] text-xs font-bold flex items-center gap-1.5 border border-purple-200/70 transition-all shadow-2xs active:scale-95 cursor-pointer"
+                  title="สร้างใบเสนอราคา หรือ ใบเสร็จรับเงินใหม่"
+                >
+                  <FileText className="w-3.5 h-3.5" />
+                  <span className="hidden sm:inline">ออกบิล/ใบเสร็จ</span>
+                </button>
+
+                <button
                   onClick={() => setShowOrderModal(true)}
                   className="w-8 h-8 rounded-xl bg-[#6C5DD3] text-white flex items-center justify-center active:scale-95 transition-all shadow-xs"
                 >
@@ -3979,6 +4029,10 @@ export default function SMEExpenseApp() {
                     onDelete={(order) => {
                       setDeleteConfirmOrder(order);
                       setSwipedOrderRow(null);
+                    }}
+                    onOpenDocument={(order) => {
+                      setSelectedDocOrder(order);
+                      setShowDocModal(true);
                     }}
                     isSwiped={swipedOrderRow === o.rowNumber}
                     onSwipeChange={(swiped) => {
@@ -4816,7 +4870,7 @@ export default function SMEExpenseApp() {
                 </button>
               </div>
 
-              <div className="grid grid-cols-2 gap-3 py-2">
+              <div className="grid grid-cols-3 gap-2 py-2">
                 <button
                   onClick={() => {
                     setQuickActionOpen(false);
@@ -4824,13 +4878,13 @@ export default function SMEExpenseApp() {
                     setNewOrder(blankOrder);
                     setShowOrderModal(true);
                   }}
-                  className="p-3 flex flex-col items-center gap-2.5 transition-all active:scale-95 text-center group cursor-pointer"
+                  className="p-2 sm:p-3 flex flex-col items-center gap-2 transition-all active:scale-95 text-center group cursor-pointer rounded-2xl hover:bg-slate-50"
                 >
-                  <div className="w-14 h-14 rounded-2xl bg-[#6C5DD3] text-white flex items-center justify-center group-hover:scale-105 transition-transform">
-                    <Package className="w-7 h-7" />
+                  <div className="w-12 h-12 rounded-2xl bg-[#6C5DD3] text-white flex items-center justify-center group-hover:scale-105 transition-transform shadow-xs">
+                    <Package className="w-6 h-6" />
                   </div>
-                  <span className="text-sm sm:text-base font-bold text-slate-800">+ เพิ่มคำสั่งซื้อ</span>
-                  <span className="text-xs text-slate-400">สร้างใบสั่งซื้อและบันทึกมัดจำ</span>
+                  <span className="text-xs sm:text-sm font-bold text-slate-800">+ คำสั่งซื้อ</span>
+                  <span className="text-[10px] text-slate-400">สั่งผลิต/มัดจำ</span>
                 </button>
 
                 <button
@@ -4842,13 +4896,28 @@ export default function SMEExpenseApp() {
                     setBillFile(null);
                     setShowExpenseModal(true);
                   }}
-                  className="p-3 flex flex-col items-center gap-2.5 transition-all active:scale-95 text-center group cursor-pointer"
+                  className="p-2 sm:p-3 flex flex-col items-center gap-2 transition-all active:scale-95 text-center group cursor-pointer rounded-2xl hover:bg-slate-50"
                 >
-                  <div className="w-14 h-14 rounded-2xl bg-[#FF8A00] text-white flex items-center justify-center group-hover:scale-105 transition-transform">
-                    <Receipt className="w-7 h-7" />
+                  <div className="w-12 h-12 rounded-2xl bg-[#FF8A00] text-white flex items-center justify-center group-hover:scale-105 transition-transform shadow-xs">
+                    <Receipt className="w-6 h-6" />
                   </div>
-                  <span className="text-sm sm:text-base font-bold text-slate-800">+ จดบิลค่าใช้จ่าย</span>
-                  <span className="text-xs text-slate-400">ไม้ วัตถุดิบ ตะปู และค่าแรง</span>
+                  <span className="text-xs sm:text-sm font-bold text-slate-800">+ บันทึกรายจ่าย</span>
+                  <span className="text-[10px] text-slate-400">บิล/สแกนสลิป</span>
+                </button>
+
+                <button
+                  onClick={() => {
+                    setQuickActionOpen(false);
+                    setSelectedDocOrder(null);
+                    setShowDocModal(true);
+                  }}
+                  className="p-2 sm:p-3 flex flex-col items-center gap-2 transition-all active:scale-95 text-center group cursor-pointer rounded-2xl hover:bg-slate-50"
+                >
+                  <div className="w-12 h-12 rounded-2xl bg-indigo-600 text-white flex items-center justify-center group-hover:scale-105 transition-transform shadow-xs">
+                    <FileText className="w-6 h-6" />
+                  </div>
+                  <span className="text-xs sm:text-sm font-bold text-slate-800">📄 ออกเอกสาร</span>
+                  <span className="text-[10px] text-slate-400">ใบเสนอราคา/ใบเสร็จ</span>
                 </button>
               </div>
             </div>
@@ -5733,6 +5802,29 @@ export default function SMEExpenseApp() {
             deliveryMethods: deliveryMethods,
           }}
           onSave={handleSaveStoreSettings}
+        />
+
+        {/* ─── Commercial Document Modal (Quotation, Invoice, Receipt, Tax Invoice) ─── */}
+        <CommercialDocumentModal
+          isOpen={showDocModal}
+          onClose={() => {
+            setShowDocModal(false);
+            setSelectedDocOrder(null);
+          }}
+          order={selectedDocOrder}
+          storeSettings={{
+            businessName:
+              userProfile?.businessName ||
+              currentUser?.user_metadata?.business_name ||
+              'ร้านค้าของฉัน',
+            phone: storeDetails.phone || (userProfile as any)?.phone || '',
+            address: storeDetails.address || '',
+            taxId: storeDetails.taxId || '',
+            tagline: storeDetails.tagline || '',
+            logoUrl: storeLogo,
+            categories: expenseCategories,
+            deliveryMethods: deliveryMethods,
+          }}
         />
 
       </div>
