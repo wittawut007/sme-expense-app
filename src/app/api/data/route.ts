@@ -71,7 +71,11 @@ export async function GET(req: Request) {
     const supabase = getAuthenticatedSupabaseClient(token);
 
     // Query user profile & store settings
-    let businessName = user.user_metadata?.business_name || 'ร้านค้าของฉัน';
+    let businessName =
+      user.user_metadata?.business_name ||
+      user.user_metadata?.full_name ||
+      user.user_metadata?.name ||
+      'ร้านค้าของฉัน';
     let userRole = 'owner';
     let phone = user.user_metadata?.phone || '';
     let address = user.user_metadata?.address || '';
@@ -79,7 +83,11 @@ export async function GET(req: Request) {
     let tagline = user.user_metadata?.tagline || '';
     let categories = user.user_metadata?.categories || null;
     let deliveryMethods = user.user_metadata?.delivery_methods || null;
-    let logoUrl = user.user_metadata?.logo_url || null;
+    let logoUrl =
+      user.user_metadata?.logo_url ||
+      user.user_metadata?.avatar_url ||
+      user.user_metadata?.picture ||
+      null;
 
     try {
       const { data: profile } = await supabase

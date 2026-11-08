@@ -1615,6 +1615,9 @@ export default function SMEExpenseApp() {
           if (session?.user) {
             setCurrentUser(session.user);
             setAuthToken(session.access_token);
+            if (typeof window !== 'undefined' && window.location.hash.includes('access_token')) {
+              window.history.replaceState(null, '', window.location.pathname + window.location.search);
+            }
           } else {
             setCurrentUser(null);
             setAuthToken(null);
@@ -1629,6 +1632,9 @@ export default function SMEExpenseApp() {
         if (session?.user) {
           setCurrentUser(session.user);
           setAuthToken(session.access_token);
+          if (typeof window !== 'undefined' && window.location.hash.includes('access_token')) {
+            window.history.replaceState(null, '', window.location.pathname + window.location.search);
+          }
         } else {
           setCurrentUser(null);
           setAuthToken(null);
