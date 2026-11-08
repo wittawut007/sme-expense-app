@@ -12,6 +12,7 @@ const kanit = Kanit({
 export const metadata: Metadata = {
   title: 'SME Management - ระบบจัดการร้านค้าและค่าใช้จ่าย',
   description: 'ระบบบริหารคำสั่งซื้อ ยอดขาย และต้นทุนค่าใช้จ่ายสำหรับธุรกิจ SME เชื่อมต่อ Supabase Cloud',
+  manifest: '/manifest.json',
   icons: {
     icon: [
       { url: '/logo.png', type: 'image/png' },
@@ -23,6 +24,9 @@ export const metadata: Metadata = {
     capable: true,
     statusBarStyle: 'black-translucent',
     title: 'SME Management',
+  },
+  formatDetection: {
+    telephone: false,
   },
 };
 

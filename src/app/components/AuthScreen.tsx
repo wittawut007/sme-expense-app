@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Mail,
   Lock,
@@ -52,6 +52,26 @@ export function AuthScreen({ onLoginSuccess }: AuthScreenProps) {
   const [googleLoading, setGoogleLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [successMsg, setSuccessMsg] = useState<string | null>(null);
+
+  // Auto-hide mobile browser toolbar on load & first touch
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const hideToolbar = () => {
+      if (window.scrollY === 0) {
+        window.scrollTo({ top: 1, behavior: 'smooth' });
+      }
+    };
+    const timer = setTimeout(hideToolbar, 350);
+    const onFirstTouch = () => {
+      hideToolbar();
+      window.removeEventListener('touchstart', onFirstTouch);
+    };
+    window.addEventListener('touchstart', onFirstTouch, { passive: true });
+    return () => {
+      clearTimeout(timer);
+      window.removeEventListener('touchstart', onFirstTouch);
+    };
+  }, []);
 
   const handleGoogleAuth = async () => {
     try {

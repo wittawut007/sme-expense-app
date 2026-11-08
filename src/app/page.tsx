@@ -1605,6 +1605,30 @@ export default function SMEExpenseApp() {
   const [authToken, setAuthToken] = useState<string | null>(null);
   const [showAuthModal, setShowAuthModal] = useState(false);
 
+  // Auto-hide mobile browser toolbar by triggering micro-scroll on mount & initial touch
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+
+    const hideToolbar = () => {
+      if (window.scrollY === 0 && document.documentElement.scrollHeight > window.innerHeight) {
+        window.scrollTo({ top: 1, behavior: 'smooth' });
+      }
+    };
+
+    const timer = setTimeout(hideToolbar, 350);
+
+    const onFirstTouch = () => {
+      hideToolbar();
+      window.removeEventListener('touchstart', onFirstTouch);
+    };
+    window.addEventListener('touchstart', onFirstTouch, { passive: true });
+
+    return () => {
+      clearTimeout(timer);
+      window.removeEventListener('touchstart', onFirstTouch);
+    };
+  }, []);
+
   // Initialize and listen to Supabase Auth state changes
   useEffect(() => {
     let mounted = true;
