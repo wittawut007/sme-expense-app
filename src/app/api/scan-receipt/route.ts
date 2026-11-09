@@ -74,14 +74,13 @@ export async function POST(req: Request) {
       process.env.NEXT_PUBLIC_GEMINI_API_KEY ||
       '';
 
-    // 4. Demo fallback if user is not authenticated or API key is missing
-    if (!user || !apiKey || apiKey.trim() === '' || apiKey.includes('your_')) {
+    // 4. Demo fallback if API key is missing
+    const hasApiKey = Boolean(apiKey && apiKey.trim() !== '' && !apiKey.includes('your_'));
+    if (!hasApiKey) {
       return NextResponse.json({
         success: true,
         isDemo: true,
-        message: user
-          ? 'โหมดจำลอง (กรุณาตั้งค่า GEMINI_API_KEY ใน .env.local เพื่อสแกนบิลจริง)'
-          : 'โหมดจำลอง (กรุณาเข้าสู่ระบบเพื่อสแกนบิลจริงด้วย AI ประจำร้านของคุณ)',
+        message: 'โหมดจำลอง (กรุณาตั้งค่า GEMINI_API_KEY เพื่อสแกนบิลจริงด้วย AI ประจำร้านของคุณ)',
         data: {
           vendor: 'บริษัท สยาม ซัพพลาย แอนด์ โลจิสติกส์ จำกัด',
           billDate: new Date().toISOString().substring(0, 10),
@@ -89,9 +88,7 @@ export async function POST(req: Request) {
           paymentMethod: 'PromptPay',
           category: 'ต้นทุนสินค้า/วัตถุดิบ',
           totalPrice: 1975.89,
-          note: user
-            ? 'สแกนผ่านระบบจำลอง'
-            : 'สแกนผ่านระบบจำลอง (เข้าสู่ระบบเพื่อใช้ AI สแกนบิลจริงของร้าน)',
+          note: 'สแกนผ่านระบบจำลอง (ตั้งค่า GEMINI_API_KEY เพื่อสแกนบิลจริง)',
           items: [
             {
               itemName: 'สินค้าและวัตถุดิบสำหรับการขาย (แพ็คละ 5 ชิ้น)',
@@ -157,7 +154,12 @@ export async function POST(req: Request) {
 
     // Call Gemini API with structured JSON schema
     let responseText = '';
-    const modelsToTry = ['gemini-2.5-flash', 'gemini-1.5-flash', 'gemini-2.0-flash'];
+    const modelsToTry = [
+      'gemini-3.5-flash-lite',
+      'gemini-3.1-flash-lite',
+      'gemini-3-flash-preview',
+      'gemini-3.8-flash',
+    ];
     let lastError: any = null;
 
     for (const model of modelsToTry) {
@@ -219,7 +221,14 @@ export async function POST(req: Request) {
       throw lastError || new Error('Gemini ไม่ได้ส่งผลลัพธ์กลับมา');
     }
 
-    const parsed = JSON.parse(responseText);
+    let cleanText = responseText.trim();
+    if (cleanText.startsWith('```json')) {
+      cleanText = cleanText.replace(/^```json\s*/, '').replace(/\s*```$/, '');
+    } else if (cleanText.startsWith('```')) {
+      cleanText = cleanText.replace(/^```\s*/, '').replace(/\s*```$/, '');
+    }
+
+    const parsed = JSON.parse(cleanText);
 
     return NextResponse.json({
       success: true,
