@@ -1763,7 +1763,7 @@ export default function SMEExpenseApp() {
       console.warn('Cache restoration warning:', e);
     }
   }, [currentUser]);
-  const [selectedMonth, setSelectedMonth] = useState<string>('ALL');
+  const [selectedMonth, setSelectedMonth] = useState<string>(() => getLocalDateString().substring(0, 7));
   const [orderFilter, setOrderFilter] = useState<
     | 'ALL'
     | 'PAYMENT'
@@ -3081,15 +3081,6 @@ export default function SMEExpenseApp() {
         }}
       />
 
-      {/* ─── iOS Safari Bottom Edge Browser Bar Color Sampler (Pure White #ffffff) ─── */}
-      <div
-        className="fixed bottom-0 left-0 right-0 w-full pointer-events-none z-[99999] bg-white"
-        style={{
-          height: 'max(8px, env(safe-area-inset-bottom, 0px))',
-          backgroundColor: '#ffffff',
-        }}
-      />
-
       {/* ─── Mobile View Container (Locked & Fluid) ─── */}
       <div
         className={`w-full max-w-[430px] min-h-screen flex flex-col relative overflow-x-hidden overscroll-x-none ${
@@ -3737,43 +3728,21 @@ export default function SMEExpenseApp() {
                 </div>
               </div>
 
-              <div className="flex items-center gap-2 shrink-0">
-                {/* Month Selector (ไม่มีพื้นหลัง และไม่มีเส้นขอบ) */}
-                <div className="relative inline-flex items-center text-xs font-bold text-slate-700 hover:text-slate-900 cursor-pointer transition-colors">
-                  <select
-                    value={selectedMonth}
-                    onChange={(e) => setSelectedMonth(e.target.value)}
-                    className="bg-transparent text-slate-700 hover:text-slate-900 text-xs font-bold outline-none cursor-pointer appearance-none pr-4 border-none shadow-none"
-                  >
-                    <option value="ALL">ทุกรอบเดือน</option>
-                    {availableMonths.map((m) => (
-                      <option key={m} value={m}>
-                        {formatThaiMonth(m)}
-                      </option>
-                    ))}
-                  </select>
-                  <ChevronDown className="w-3 h-3 text-slate-400 pointer-events-none absolute right-0" />
-                </div>
-
-                <button
-                  type="button"
-                  onClick={() => {
-                    setSelectedDocOrder(null);
-                    setShowDocModal(true);
-                  }}
-                  className="px-2.5 sm:px-3 py-1.5 rounded-xl bg-purple-50 hover:bg-purple-100 text-[#6C5DD3] text-xs font-bold flex items-center gap-1.5 border border-purple-200/70 transition-all shadow-2xs active:scale-95 cursor-pointer"
-                  title="สร้างใบเสนอราคา หรือ ใบเสร็จรับเงินใหม่"
+              {/* Month Selector: ไม่มีพื้นหลัง และไม่มีเส้นขอบ */}
+              <div className="relative inline-flex items-center text-xs font-bold text-slate-700 hover:text-slate-900 cursor-pointer transition-colors shrink-0">
+                <select
+                  value={selectedMonth}
+                  onChange={(e) => setSelectedMonth(e.target.value)}
+                  className="bg-transparent text-slate-700 hover:text-slate-900 text-xs font-bold outline-none cursor-pointer appearance-none pr-4 border-none shadow-none"
                 >
-                  <FileText className="w-3.5 h-3.5" />
-                  <span className="hidden sm:inline">ออกบิล/ใบเสร็จ</span>
-                </button>
-
-                <button
-                  onClick={() => setShowOrderModal(true)}
-                  className="w-8 h-8 rounded-xl bg-[#6C5DD3] text-white flex items-center justify-center active:scale-95 transition-all shadow-xs"
-                >
-                  <Plus className="w-4 h-4" />
-                </button>
+                  <option value="ALL">ทุกรอบเดือน</option>
+                  {availableMonths.map((m) => (
+                    <option key={m} value={m}>
+                      {formatThaiMonth(m)}
+                    </option>
+                  ))}
+                </select>
+                <ChevronDown className="w-3 h-3 text-slate-400 pointer-events-none absolute right-0" />
               </div>
             </div>
 
@@ -4085,38 +4054,21 @@ export default function SMEExpenseApp() {
                   </p>
                 </div>
               </div>
-              <div className="flex items-center gap-2 shrink-0">
-                {/* Month Selector (ไม่มีพื้นหลัง และไม่มีเส้นขอบ) */}
-                <div className="relative inline-flex items-center text-xs font-bold text-slate-700 hover:text-slate-900 cursor-pointer transition-colors">
-                  <select
-                    value={selectedMonth}
-                    onChange={(e) => setSelectedMonth(e.target.value)}
-                    className="bg-transparent text-slate-700 hover:text-slate-900 text-xs font-bold outline-none cursor-pointer appearance-none pr-4 border-none shadow-none"
-                  >
-                    <option value="ALL">ทุกรอบเดือน</option>
-                    {availableMonths.map((m) => (
-                      <option key={m} value={m}>
-                        {formatThaiMonth(m)}
-                      </option>
-                    ))}
-                  </select>
-                  <ChevronDown className="w-3 h-3 text-slate-400 pointer-events-none absolute right-0" />
-                </div>
-
-                {/* จดบิลค่าใช้จ่ายใหม่ */}
-                <button
-                  onClick={() => {
-                    setEditingExpense(null);
-                    setExpenseForm(blankExpenseForm);
-                    setExpenseItems([createBlankSubItem()]);
-                    setBillFile(null);
-                    setShowExpenseModal(true);
-                  }}
-                  className="w-8 h-8 rounded-xl bg-[#FF8A00] text-white flex items-center justify-center active:scale-95 transition-all shadow-xs cursor-pointer shrink-0"
-                  title="จดบิลค่าใช้จ่ายใหม่"
+              {/* Month Selector: ไม่มีพื้นหลัง และไม่มีเส้นขอบ */}
+              <div className="relative inline-flex items-center text-xs font-bold text-slate-700 hover:text-slate-900 cursor-pointer transition-colors shrink-0">
+                <select
+                  value={selectedMonth}
+                  onChange={(e) => setSelectedMonth(e.target.value)}
+                  className="bg-transparent text-slate-700 hover:text-slate-900 text-xs font-bold outline-none cursor-pointer appearance-none pr-4 border-none shadow-none"
                 >
-                  <Plus className="w-4 h-4" />
-                </button>
+                  <option value="ALL">ทุกรอบเดือน</option>
+                  {availableMonths.map((m) => (
+                    <option key={m} value={m}>
+                      {formatThaiMonth(m)}
+                    </option>
+                  ))}
+                </select>
+                <ChevronDown className="w-3 h-3 text-slate-400 pointer-events-none absolute right-0" />
               </div>
             </div>
 
@@ -4785,15 +4737,25 @@ export default function SMEExpenseApp() {
         {/*  FLOATING BOTTOM NAVIGATION BAR (Gradient Transparency) */}
         {/* ══════════════════════════════════════════════════ */}
         <nav
-          className="fixed bottom-0 left-0 right-0 w-full z-40 bg-gradient-to-b from-transparent via-white/85 via-40% to-white backdrop-blur-lg border-t border-white/30 shadow-[0_-4px_24px_rgba(0,0,0,0.03)]"
+          className="fixed bottom-0 left-0 right-0 w-full z-40"
           style={{ paddingBottom: 'max(0.75rem, calc(env(safe-area-inset-bottom, 0px) + 0.35rem))' }}
         >
-          <div className="max-w-[430px] mx-auto px-3 pt-2">
+          {/* ชั้นพื้นหลังไล่โทนสีโปร่งแสงไร้ขอบบน (Feathered Translucent Backdrop) */}
+          <div
+            className="absolute inset-0 pointer-events-none backdrop-blur-md"
+            style={{
+              background:
+                'linear-gradient(to bottom, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.55) 40%, rgba(255, 255, 255, 0.85) 100%)',
+              WebkitMaskImage: 'linear-gradient(to bottom, transparent 0%, black 35%, black 100%)',
+              maskImage: 'linear-gradient(to bottom, transparent 0%, black 35%, black 100%)',
+            }}
+          />
+          <div className="max-w-[430px] mx-auto px-3 pt-3 relative z-10">
             <div className="flex items-center justify-around relative">
               {/* 1: Home */}
               <button
                 onClick={() => setActiveTab('home')}
-                className={`flex flex-col items-center gap-1 py-1 px-2 transition-colors ${
+                className={`flex flex-col items-center gap-1 py-1 px-2 transition-colors focus:outline-none ${
                   activeTab === 'home' ? 'text-[#6C5DD3]' : 'text-slate-400 hover:text-slate-600'
                 }`}
               >
@@ -4807,7 +4769,7 @@ export default function SMEExpenseApp() {
                   setOrderFilter('ALL');
                   setActiveTab('orders');
                 }}
-                className={`flex flex-col items-center gap-1 py-1 px-2 transition-colors ${
+                className={`flex flex-col items-center gap-1 py-1 px-2 transition-colors focus:outline-none ${
                   activeTab === 'orders' ? 'text-[#6C5DD3]' : 'text-slate-400 hover:text-slate-600'
                 }`}
               >
@@ -4819,7 +4781,7 @@ export default function SMEExpenseApp() {
               <div className="relative -top-5 shrink-0">
                 <button
                   onClick={() => setQuickActionOpen(true)}
-                  className="w-14 h-14 rounded-full bg-gradient-to-tr from-[#5541D7] via-[#6C5DD3] to-[#8F7CFF] flex items-center justify-center text-white active:scale-95 transition-transform cursor-pointer"
+                  className="w-14 h-14 rounded-full bg-gradient-to-tr from-[#5541D7] via-[#6C5DD3] to-[#8F7CFF] flex items-center justify-center text-white active:scale-95 transition-transform cursor-pointer focus:outline-none"
                   title="สร้างรายการใหม่"
                 >
                   <Plus className="w-7 h-7 text-white stroke-[2.5]" />
@@ -4829,7 +4791,7 @@ export default function SMEExpenseApp() {
               {/* 4: Expenses List */}
               <button
                 onClick={() => setActiveTab('expenses')}
-                className={`flex flex-col items-center gap-1 py-1 px-2 transition-colors ${
+                className={`flex flex-col items-center gap-1 py-1 px-2 transition-colors focus:outline-none ${
                   activeTab === 'expenses' ? 'text-[#FF8A00]' : 'text-slate-400 hover:text-slate-600'
                 }`}
               >
@@ -4840,7 +4802,7 @@ export default function SMEExpenseApp() {
               {/* 5: History */}
               <button
                 onClick={() => setActiveTab('history')}
-                className={`flex flex-col items-center gap-1 py-1 px-2 transition-colors ${
+                className={`flex flex-col items-center gap-1 py-1 px-2 transition-colors focus:outline-none ${
                   activeTab === 'history' ? 'text-[#6C5DD3]' : 'text-slate-400 hover:text-slate-600'
                 }`}
               >
